@@ -1,1 +1,56 @@
-test
+<!DOCTYPE html>
+<html>
+<head>
+    <title>License Plate Reader</title>
+</head>
+<body>
+    <h1>License Plate Reader</h1>
+    
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="capture">Capture Image</button>
+    <canvas id="canvas" style="display: none;"></canvas>
+    
+    <div id="result"></div>
+    
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const captureButton = document.getElementById('capture');
+        const resultDiv = document.getElementById('result');
+        
+        // Get user media for the camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('Error accessing camera: ' + error);
+            });
+
+        captureButton.addEventListener('click', () => {
+            // Capture a frame from the camera
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert the captured frame to base64 data URL
+            const imageData = canvas.toDataURL('image/jpeg');
+            
+            // Send the captured image to a server for processing (backend not included)
+            // You can use an API to send the image to a backend script for license plate recognition.
+            // Example: fetch('/process-image', {
+            //    method: 'POST',
+            //    body: JSON.stringify({ image: imageData }),
+            //    headers: { 'Content-Type': 'application/json' }
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //    resultDiv.innerText = 'License Plate: ' + data.plateNumber;
+            // });
+            
+            // For simplicity, we'll just display the base64 image in this example
+            resultDiv.innerHTML = '<img src="' + imageData + '" />';
+        });
+    </script>
+</body>
+</html>
+
