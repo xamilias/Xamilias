@@ -1,56 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>License Plate Reader</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<style>
+/* Basic Reset */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: Arial, sans-serif;
+background-color: #f4f4f4;
+display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+width: 250px;
+background-color: #0096FF;
+color: white;
+padding: 20px;
+height: 100vh;
+position: fixed;
+}
+
+.sidebar h2 {
+margin-bottom: 30px;
+text-align: center;
+}
+
+.sidebar a {
+display: block;
+padding: 15px;
+color: white;
+text-decoration: none;
+margin-bottom: 10px;
+border-radius: 5px;
+transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+background-color: #0096FF;
+}
+
+/* Main Content */
+.main-content {
+margin-left: 270px;
+padding: 30px;
+width: calc(100% - 270px);
+}
+
+.dashboard-title {
+text-align: center;
+font-size: 2em;
+margin-bottom: 30px;
+}
+
+/* Sections (Products, Settings) */
+.section {
+display: none;
+}
+
+.section.active {
+display: block;
+}
+
+/* Placeholder for Products Section */
+.placeholder {
+text-align: center;
+padding: 50px;
+background-color: #fff;
+border-radius: 8px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+margin-top: 50px;
+}
+
+.placeholder h3 {
+font-size: 1.5em;
+color: #333;
+}
+
+/* Settings Section */
+.settings {
+background-color: white;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.settings h3 {
+font-size: 1.5em;
+color: #333;
+margin-bottom: 15px;
+}
+
+.settings input {
+padding: 10px;
+margin-bottom: 15px;
+width: 100%;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+.settings button {
+background-color: #3498db;
+color: white;
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.settings button:hover {
+background-color: #2980b9;
+}
+
+</style>
 </head>
 <body>
-    <h1>License Plate Reader</h1>
-    
-    <video id="video" width="640" height="480" autoplay></video>
-    <button id="capture">Capture Image</button>
-    <canvas id="canvas" style="display: none;"></canvas>
-    
-    <div id="result"></div>
-    
-    <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const context = canvas.getContext('2d');
-        const captureButton = document.getElementById('capture');
-        const resultDiv = document.getElementById('result');
-        
-        // Get user media for the camera
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then((stream) => {
-                video.srcObject = stream;
-            })
-            .catch((error) => {
-                console.error('Error accessing camera: ' + error);
-            });
 
-        captureButton.addEventListener('click', () => {
-            // Capture a frame from the camera
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Convert the captured frame to base64 data URL
-            const imageData = canvas.toDataURL('image/jpeg');
-            
-            // Send the captured image to a server for processing (backend not included)
-            // You can use an API to send the image to a backend script for license plate recognition.
-            // Example: fetch('/process-image', {
-            //    method: 'POST',
-            //    body: JSON.stringify({ image: imageData }),
-            //    headers: { 'Content-Type': 'application/json' }
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //    resultDiv.innerText = 'License Plate: ' + data.plateNumber;
-            // });
-            
-            // For simplicity, we'll just display the base64 image in this example
-            resultDiv.innerHTML = '<img src="' + imageData + '" />';
-        });
-    </script>
+<!-- Sidebar -->
+<div class="sidebar">
+<h2> Dashboard</h2>
+<a href="#" id="productsLink">Products</a>
+<a href="#" id="settingsLink">Settings</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+<div class="dashboard-title"></div>
+
+<!-- Products Section Placeholder -->
+<div class="section" id="productsSection">
+<div class="placeholder">
+
+</div>
+</div>
+
+<!-- Settings Section -->
+<div class="section" id="settingsSection">
+<div class="settings">
+<h3>Change Store Name</h3>
+<input type="text" placeholder="Enter new store name">
+<button>Save Settings</button>
+</div>
+</div>
+
+</div>
+
+<script>
+// Function to show the Products section
+document.getElementById('productsLink').addEventListener('click', function() {
+document.getElementById('productsSection').classList.add('active');
+document.getElementById('settingsSection').classList.remove('active');
+document.querySelector('.dashboard-title').textContent = "Manage Products";
+});
+
+// Function to show the Settings section
+document.getElementById('settingsLink').addEventListener('click', function() {
+document.getElementById('settingsSection').classList.add('active');
+document.getElementById('productsSection').classList.remove('active');
+document.querySelector('.dashboard-title').textContent = "Store Settings";
+});
+
+// Default view is the Products section
+document.getElementById('productsSection').classList.add('active');
+</script>
+
 </body>
 </html>
-
